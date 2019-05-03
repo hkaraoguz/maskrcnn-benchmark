@@ -2,7 +2,7 @@ from maskrcnn_benchmark.config import cfg
 from maskrcnn.demo.predictor import COCODemo
 import cv2
 config_file = "/home/cybercomml/Dev/CyberCV/maskrcnn/configs/caffe2/e2e_mask_rcnn_R_50_FPN_1x_caffe2.yaml"
-
+MIN_CONF_THRESHOLD = 0.5
 # update the config options with the config file
 cfg.merge_from_file(config_file)
 # manual override some options
@@ -14,10 +14,12 @@ coco_demo = COCODemo(
     confidence_threshold=0.7,
 )
 
-def detect(imgs):
+def detect(imgs,confidence_threshold):
+  if confidence_threshold < MIN_CONF_THRESHOLD:
+    confidence_threshold=MIN_CONF_THRESHOLD
   img_results = []
   for img in imgs:
-    resultimg,boxes = coco_demo.run_on_opencv_image(img)
+    resultimg,boxes = coco_demo.run_on_opencv_image(img,confidence_threshold)
     labels = boxes.get_field("labels")
     scores = boxes.get_field("scores")
     result_labels = []

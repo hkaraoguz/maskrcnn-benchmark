@@ -159,7 +159,7 @@ class COCODemo(object):
         )
         return transform
 
-    def run_on_opencv_image(self, image):
+    def run_on_opencv_image(self, image, confidence_threshold):
         """
         Arguments:
             image (np.ndarray): an image as returned by OpenCV
@@ -169,6 +169,7 @@ class COCODemo(object):
                 of the detection properties can be found in the fields of
                 the BoxList via `prediction.fields()`
         """
+        self.confidence_threshold = confidence_threshold
         predictions = self.compute_prediction(image)
         top_predictions = self.select_top_predictions(predictions)
 
