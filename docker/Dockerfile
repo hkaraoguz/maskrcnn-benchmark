@@ -51,7 +51,7 @@ RUN git clone https://github.com/NVIDIA/apex.git \
  && cd apex \
  && python setup.py install --cuda_ext --cpp_ext
 
-RUN rm -r CyberCV/ -f
+#RUN rm -r ./CyberCV/ -f
 # install PyTorch Detection
 ARG FORCE_CUDA="1"
 ENV FORCE_CUDA=${FORCE_CUDA}
@@ -63,12 +63,15 @@ RUN git clone https://github.com/hkaraoguz/maskrcnn-benchmark.git -b docker \
 
 ENV PYTHONPATH "${PYTHONPATH}:/CyberCV"
 
-RUN rm -r websocket_manager/ -f
+RUN mkdir -p /root/.torch/models
+COPY _detectron_35858933_12_2017_baselines_e2e_mask_rcnn_R-50-FPN_1x.yaml.01_48_14.DzEQe4wC_output_train_coco_2014_train%3Acoco_2014_valminusminival_generalized_rcnn_model_final.pkl /root/.torch/models
+
+#RUN rm -r ./websocket_manager/ -f
 
 RUN git clone  https://gitlab-ci-token:8j5LoqR9seTfKoF2bqJD@gitlab.com/hkaraoguz/websocket_manager.git      
 
-ARG CACHEBUST=1
+
 
 WORKDIR /
-CMD [ "python", "./websocket_manager/websocket_manager/src/websocket_manager_maskrcnn.py" ]
+ENTRYPOINT [ "python", "./websocket_manager/websocket_manager/src/websocket_manager_maskrcnn.py" ]
 
