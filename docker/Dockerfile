@@ -51,10 +51,11 @@ RUN git clone https://github.com/NVIDIA/apex.git \
  && cd apex \
  && python setup.py install --cuda_ext --cpp_ext
 
+RUN rm -r CyberCV/ -f
 # install PyTorch Detection
 ARG FORCE_CUDA="1"
 ENV FORCE_CUDA=${FORCE_CUDA}
-RUN git clone https://github.com/hkaraoguz/maskrcnn-benchmark.git \
+RUN git clone https://github.com/hkaraoguz/maskrcnn-benchmark.git -b docker \
               && mkdir CyberCV \ 
               && mv maskrcnn-benchmark CyberCV/maskrcnn \
               && cd CyberCV/maskrcnn \
@@ -68,6 +69,6 @@ RUN git clone  https://gitlab-ci-token:8j5LoqR9seTfKoF2bqJD@gitlab.com/hkaraoguz
 
 ARG CACHEBUST=1
 
-WORKDIR /websocket_manager
-CMD [ "python", "./websocket_manager/src/websocket_manager_maskrcnn.py" ]
+WORKDIR /
+CMD [ "python", "./websocket_manager/websocket_manager/src/websocket_manager_maskrcnn.py" ]
 
