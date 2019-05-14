@@ -1,7 +1,7 @@
 from maskrcnn_benchmark.config import cfg
 from maskrcnn.demo.predictor import COCODemo
 import cv2
-config_file = "/home/cybercomml/Dev/CyberCV/maskrcnn/configs/caffe2/e2e_mask_rcnn_R_50_FPN_1x_caffe2.yaml"
+config_file = "$HOME/CyberCV/maskrcnn/configs/caffe2/e2e_mask_rcnn_R_50_FPN_1x_caffe2.yaml"
 MIN_CONF_THRESHOLD = 0.5
 # update the config options with the config file
 cfg.merge_from_file(config_file)

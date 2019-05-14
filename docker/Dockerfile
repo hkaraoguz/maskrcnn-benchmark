@@ -29,7 +29,7 @@ ENV PATH=$CONDA_PREFIX/bin:$PATH
 ENV CONDA_AUTO_UPDATE_CONDA=false
 
 RUN conda install -y ipython
-RUN pip install ninja yacs cython matplotlib opencv-python tqdm
+RUN pip install ninja yacs cython matplotlib opencv-python tqdm websockets yacs pyyaml
 
 # Install PyTorch 1.0 Nightly
 ARG CUDA
@@ -54,8 +54,20 @@ RUN git clone https://github.com/NVIDIA/apex.git \
 # install PyTorch Detection
 ARG FORCE_CUDA="1"
 ENV FORCE_CUDA=${FORCE_CUDA}
-RUN git clone https://github.com/facebookresearch/maskrcnn-benchmark.git \
- && cd maskrcnn-benchmark \
- && python setup.py build develop
+RUN git clone https://github.com/hkaraoguz/maskrcnn-benchmark.git \
+              && mkdir CyberCV \ 
+              && mv maskrcnn-benchmark CyberCV/maskrcnn \
+              && cd CyberCV/maskrcnn \
+              && python setup.py build develop
 
-WORKDIR /maskrcnn-benchmark
+ENV PYTHONPATH "${PYTHONPATH}:/CyberCV"
+
+RUN rm -r websocket_manager/ -f
+
+RUN git clone  https://gitlab-ci-token:8j5LoqR9seTfKoF2bqJD@gitlab.com/hkaraoguz/websocket_manager.git      
+
+ARG CACHEBUST=1
+
+WORKDIR /websocket_manager
+CMD [ "python", "./websocket_manager/src/websocket_manager_maskrcnn.py" ]
+
