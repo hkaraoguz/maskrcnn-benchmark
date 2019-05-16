@@ -42,8 +42,8 @@ def detect(imgs,confidence_threshold):
        #print(result_scores[i])
        #print(result_labels[i])
        current_result.append([bbox[0],bbox[1],bbox[2],bbox[3],float(result_scores[i]),result_labels[i]])
-    if(len(current_result)>0):
-      img_results.append(current_result)
+    #if(len(current_result)>0):
+    img_results.append(current_result)
    
   return img_results
       
